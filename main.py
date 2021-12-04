@@ -22,6 +22,7 @@ def evaluate_expression(num1, exp, num2):
 
 # Function to subtract infinite amount of numbers
 def subtract_nums():
+    total = 0
     num_of_nums = int(input("How many numbers would you like to total\n"))
     for i in range(0, num_of_nums):
         if i == 0:
@@ -33,6 +34,7 @@ def subtract_nums():
 
 # Function to multiply any amount of numbers
 def multiply_nums():
+    total = 0
     num_of_nums = int(input("How many numbers would you like to multiply\n"))
     for i in range(0, num_of_nums):
         if i == 0:
@@ -52,11 +54,75 @@ def divide_nums():
 def evaluate_equation(equation_input):
     equation_split = equation_input.split()
     function_index_list = []
+    function_lst = []
     for i in range(0, len(equation_split)):
         if equation_split[i] in math_functions:
             function_index_list.append(i)
-    for i in range(0, len(function_index_list)):
-        if equation_split[function_index_list[i]] == "(":
+            function_lst.append(equation_split[i])
+    while "^" in function_lst:
+        for i in range(0, len(function_lst)):
+            if equation_split[function_index_list[i]] == "^":
+                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "^",
+                                            int(equation_split[function_index_list[i] + 1]))
+                equation_split[function_index_list[i]] = value
+                equation_split.pop(function_index_list[i] + 1)
+                equation_split.pop(function_index_list[i] - 1)
+                function_lst.remove("^")
+                for j in range(0, len(function_index_list)):
+                    if function_index_list[j] > function_index_list[i]:
+                        function_index_list[j] -= 2
+    while "*" in function_lst or "x" in function_lst:
+        for i in range(0, len(function_lst)):
+            if equation_split[function_index_list[i]] == "*":
+                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "*",
+                                            int(equation_split[function_index_list[i] + 1]))
+                equation_split[function_index_list[i]] = value
+                equation_split.pop(function_index_list[i] + 1)
+                equation_split.pop(function_index_list[i] - 1)
+                function_lst.remove("*")
+                for j in range(0, len(function_index_list)):
+                    if function_index_list[j] > function_index_list[i]:
+                        function_index_list[j] -= 2
+    while "/" in function_lst:
+        for i in range(0, len(function_lst)):
+            if equation_split[function_index_list[i]] == "/":
+                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "/",
+                                            int(equation_split[function_index_list[i] + 1]))
+                equation_split[function_index_list[i]] = value
+                equation_split.pop(function_index_list[i] + 1)
+                equation_split.pop(function_index_list[i] - 1)
+                function_lst.remove("/")
+                for j in range(0, len(function_index_list)):
+                    if function_index_list[j] > function_index_list[i]:
+                        function_index_list[j] -= 2
+    while "+" in function_lst:
+        for i in range(0, len(function_lst)):
+            if equation_split[function_index_list[i]] == "+":
+                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "+",
+                                            int(equation_split[function_index_list[i] + 1]))
+                equation_split[function_index_list[i]] = value
+                equation_split.pop(function_index_list[i] + 1)
+                equation_split.pop(function_index_list[i] - 1)
+                function_lst.remove("+")
+                for j in range(0, len(function_index_list)):
+                    if function_index_list[j] > function_index_list[i]:
+                        function_index_list[j] -= 2
+    while "-" in function_lst:
+        for i in range(0, len(function_lst)):
+            if equation_split[function_index_list[i]] == "-":
+                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "-",
+                                            int(equation_split[function_index_list[i] + 1]))
+                equation_split[function_index_list[i]] = value
+                equation_split.pop(function_index_list[i] + 1)
+                equation_split.pop(function_index_list[i] - 1)
+                function_lst.remove("-")
+                for j in range(0, len(function_index_list)):
+                    if function_index_list[j] > function_index_list[i]:
+                        function_index_list[j] -= 2
+
+
+
+        """if equation_split[function_index_list[i]] == "(":
             parenthesis_range = [function_index_list[i]]
             for j in range(0, len(function_index_list)):
                 if equation_split[function_index_list[j]] == ")":
@@ -75,7 +141,7 @@ def evaluate_equation(equation_input):
                     function_index_list[j] -= 2
             if len(equation_split) == 1:
                 break
-        if equation_split[function_index_list[i]] == "*" or equation_split[function_index_list[i]] == "x":
+        elif equation_split[function_index_list[i]] == "*" or equation_split[function_index_list[i]] == "x":
             value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "*",
                                         int(equation_split[function_index_list[i] + 1]))
             equation_split[function_index_list[i]] = value
@@ -86,7 +152,7 @@ def evaluate_equation(equation_input):
                     function_index_list[j] -= 2
             if len(equation_split) == 1:
                 break
-        if equation_split[function_index_list[i]] == "/":
+        elif equation_split[function_index_list[i]] == "/":
             value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "/",
                                         int(equation_split[function_index_list[i] + 1]))
             equation_split[function_index_list[i]] = value
@@ -97,7 +163,7 @@ def evaluate_equation(equation_input):
                     function_index_list[j] -= 2
             if len(equation_split) == 1:
                 break
-        if equation_split[function_index_list[i]] == "+":
+        elif equation_split[function_index_list[i]] == "+":
             value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "+",
                                         int(equation_split[function_index_list[i] + 1]))
             equation_split[function_index_list[i]] = value
@@ -108,7 +174,7 @@ def evaluate_equation(equation_input):
                     function_index_list[j] -= 2
             if len(equation_split) == 1:
                 break
-        if equation_split[function_index_list[i]] == "-":
+        elif equation_split[function_index_list[i]] == "-":
             value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "-",
                                         int(equation_split[function_index_list[i] + 1]))
             equation_split[function_index_list[i]] = value
@@ -118,7 +184,7 @@ def evaluate_equation(equation_input):
                 if function_index_list[j] > function_index_list[i]:
                     function_index_list[j] -= 2
             if len(equation_split) == 1:
-                break
+                break"""
 
     print(equation_split)
 
