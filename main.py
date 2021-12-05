@@ -55,70 +55,93 @@ def evaluate_equation(equation_input):
     equation_split = equation_input.split()
     function_index_list = []
     function_lst = []
+    functions_remaining = True
     for i in range(0, len(equation_split)):
         if equation_split[i] in math_functions:
             function_index_list.append(i)
             function_lst.append(equation_split[i])
+    counter = 0
     while "^" in function_lst:
         for i in range(0, len(function_lst)):
-            if equation_split[function_index_list[i]] == "^":
-                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "^",
-                                            int(equation_split[function_index_list[i] + 1]))
+            i -= counter
+            if functions_remaining and equation_split[function_index_list[i]] == "^":
+                value = evaluate_expression(float(equation_split[function_index_list[i] - 1]), "^",
+                                            float(equation_split[function_index_list[i] + 1]))
                 equation_split[function_index_list[i]] = value
                 equation_split.pop(function_index_list[i] + 1)
                 equation_split.pop(function_index_list[i] - 1)
                 function_lst.remove("^")
+                counter += 1
                 for j in range(0, len(function_index_list)):
                     if function_index_list[j] > function_index_list[i]:
                         function_index_list[j] -= 2
-    while "*" in function_lst or "x" in function_lst:
+                function_index_list.pop(i)
+                if len(function_index_list) == 0:
+                    functions_remaining = False
+    counter = 0
+    while "*" in function_lst or "x" in function_lst or "/" in function_lst:
         for i in range(0, len(function_lst)):
-            if equation_split[function_index_list[i]] == "*":
-                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "*",
-                                            int(equation_split[function_index_list[i] + 1]))
+            i -= counter
+            if functions_remaining and equation_split[function_index_list[i]] == "*":
+                value = evaluate_expression(float(equation_split[function_index_list[i] - 1]), "*",
+                                            float(equation_split[function_index_list[i] + 1]))
                 equation_split[function_index_list[i]] = value
                 equation_split.pop(function_index_list[i] + 1)
                 equation_split.pop(function_index_list[i] - 1)
                 function_lst.remove("*")
+                counter += 1
                 for j in range(0, len(function_index_list)):
                     if function_index_list[j] > function_index_list[i]:
                         function_index_list[j] -= 2
-    while "/" in function_lst:
-        for i in range(0, len(function_lst)):
-            if equation_split[function_index_list[i]] == "/":
-                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "/",
-                                            int(equation_split[function_index_list[i] + 1]))
+                function_index_list.pop(i)
+                if len(function_index_list) == 0:
+                    functions_remaining = False
+            if functions_remaining and equation_split[function_index_list[i]] == "/":
+                value = evaluate_expression(float(equation_split[function_index_list[i] - 1]), "/",
+                                            float(equation_split[function_index_list[i] + 1]))
                 equation_split[function_index_list[i]] = value
                 equation_split.pop(function_index_list[i] + 1)
                 equation_split.pop(function_index_list[i] - 1)
                 function_lst.remove("/")
+                counter += 1
                 for j in range(0, len(function_index_list)):
                     if function_index_list[j] > function_index_list[i]:
                         function_index_list[j] -= 2
-    while "+" in function_lst:
+                function_index_list.pop(i)
+                if len(function_index_list) == 0:
+                    functions_remaining = False
+    counter = 0
+    while "+" in function_lst or "-" in function_lst:
         for i in range(0, len(function_lst)):
-            if equation_split[function_index_list[i]] == "+":
-                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "+",
-                                            int(equation_split[function_index_list[i] + 1]))
+            i -= counter
+            if functions_remaining and equation_split[function_index_list[i]] == "+":
+                value = evaluate_expression(float(equation_split[function_index_list[i] - 1]), "+",
+                                            float(equation_split[function_index_list[i] + 1]))
                 equation_split[function_index_list[i]] = value
                 equation_split.pop(function_index_list[i] + 1)
                 equation_split.pop(function_index_list[i] - 1)
                 function_lst.remove("+")
+                counter += 1
                 for j in range(0, len(function_index_list)):
                     if function_index_list[j] > function_index_list[i]:
                         function_index_list[j] -= 2
-    while "-" in function_lst:
-        for i in range(0, len(function_lst)):
-            if equation_split[function_index_list[i]] == "-":
-                value = evaluate_expression(int(equation_split[function_index_list[i] - 1]), "-",
-                                            int(equation_split[function_index_list[i] + 1]))
+                function_index_list.pop(i)
+                if len(function_index_list) == 0:
+                    functions_remaining = False
+            if functions_remaining and equation_split[function_index_list[i]] == "-":
+                value = evaluate_expression(float(equation_split[function_index_list[i] - 1]), "-",
+                                            float(equation_split[function_index_list[i] + 1]))
                 equation_split[function_index_list[i]] = value
                 equation_split.pop(function_index_list[i] + 1)
                 equation_split.pop(function_index_list[i] - 1)
                 function_lst.remove("-")
+                counter += 1
                 for j in range(0, len(function_index_list)):
                     if function_index_list[j] > function_index_list[i]:
                         function_index_list[j] -= 2
+                function_index_list.pop(i)
+                if len(function_index_list) == 0:
+                    functions_remaining = False
 
 
 
